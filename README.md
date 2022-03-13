@@ -14,3 +14,5 @@
 14. Create EmployerDB migrate file = "php yii migrate/create create_employer_table"
 15. Create UsersDB migrate file = "php yii migrate/create create_users_table" (if in future I want Auth with DB).
 16. Commit yii-configDB = "git add . && git commit -m "config connection DB and file migrate""
+17. Push GitHub = "git push"
+18. Migration = php yii migrate

@@ -21,6 +21,22 @@ class m220313_214753_create_users_table extends Migration
             'accessToken' => $this->string(),
             'role' => $this->integer(),
         ]);
+        $this->insert('users', array(
+            'nama_user' => 'Admin',
+            'email_user' => 'admin@admin.com',
+            'password_user' => Yii::$app->getSecurity()->generatePasswordHash('password'),
+            'authKey' => '',
+            'accessToken' => '',
+            'role' => 20
+        ));
+        $this->insert('users', array(
+            'nama_user' => 'User',
+            'email_user' => 'user@user.com',
+            'password_user' => Yii::$app->getSecurity()->generatePasswordHash('password'),
+            'authKey' => '',
+            'accessToken' => '',
+            'role' => 20
+        ));
     }
 
     /**
