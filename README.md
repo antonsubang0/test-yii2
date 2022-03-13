@@ -7,10 +7,10 @@
 7. Push GitHub = "git push origin main"
 8. Run server = php yii serve
 9. Modify \models\User.php and \controllers\SiteController to apply RBAC Admin and User
-10. Commit yii-fresh "git add . && git commit -m "RBAC simple without DB"
+10. Commit yii-rbac "git add . && git commit -m "RBAC simple without DB""
 11. Push GitHub = "git push"
 12. Create Database yii2basic and modify \config\db.php
 13. Create CompaniesDB migrate file = "php yii migrate/create create_companies_table"
 14. Create EmployerDB migrate file = "php yii migrate/create create_employer_table"
 15. Create UsersDB migrate file = "php yii migrate/create create_users_table" (if in future I want Auth with DB).
-16.
+16. Commit yii-configDB = "git add . && git commit -m "config connection DB and file migrate""
