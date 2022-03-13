@@ -9,21 +9,26 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
     public $password;
     public $authKey;
     public $accessToken;
+    public $role;
+    const ROLE_USER = 10;
+    const ROLE_ADMIN = 20;
 
     private static $users = [
         '100' => [
             'id' => '100',
-            'username' => 'admin',
-            'password' => 'admin',
+            'username' => 'admin@admin.com',
+            'password' => 'password',
             'authKey' => 'test100key',
             'accessToken' => '100-token',
+            'role' => self::ROLE_ADMIN,
         ],
         '101' => [
             'id' => '101',
-            'username' => 'demo',
-            'password' => 'demo',
+            'username' => 'user@user.com',
+            'password' => 'password',
             'authKey' => 'test101key',
             'accessToken' => '101-token',
+            'role' => self::ROLE_USER,
         ],
     ];
 
@@ -100,5 +105,17 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
     public function validatePassword($password)
     {
         return $this->password === $password;
+    }
+
+    public static function isUserAdmin($username)
+    {
+        foreach (self::$users as $user) {
+            if (strcasecmp($user['username'], $username) === 0) {
+                if ($user['role'] === self::ROLE_ADMIN) {
+                    return true;
+                };
+            };
+        };
+        return false;
     }
 }
