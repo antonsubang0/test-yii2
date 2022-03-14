@@ -26,4 +26,6 @@
 26. Commit modify readme on branch main = "git add . && git commit -m "modify readme" && git push origin main"
 27. create file CompanyController, CompaniesModel and view company
 28. Commit "git add . && git commit -m "create file CompanyController, CompaniesModel and view company""
-29. create file CompanyController, CompaniesModel and view company
+29. create file EmployerController, EmployerModel and view employer
+30. create creat, read, update and delete on employers file
+31. commit crud employer = "git add . && git commit -m "crud employer""
