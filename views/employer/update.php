@@ -4,37 +4,47 @@
 /** @var yii\bootstrap4\ActiveForm $form */
 /** @var app\models\ContactForm $model */
 
+use app\models\Companies;
 use yii\bootstrap4\ActiveForm;
 use yii\bootstrap4\Html;
 use yii\captcha\Captcha;
+use yii\helpers\ArrayHelper;
 
-$this->title = 'Update Company';
-$this->params['breadcrumbs'][] = ['label' => 'Company', 'url' => ['index']];
+$company = Companies::find()->all();
+$listData = ArrayHelper::map($company, 'id_company', 'name_company');
+
+$this->title = 'Update Employer';
+$this->params['breadcrumbs'][] = ['label' => 'Employer', 'url' => ['index']];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="site-contact">
 
     <?php if (Yii::$app->session->hasFlash('success')) : ?>
-        <?= Html::a('Back', ['/company/create'], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Back', ['/employer/create'], ['class' => 'btn btn-primary']) ?>
 
     <?php else : ?>
         <h1><?= Html::encode($this->title) ?></h1>
         <p>
-            Please insert your company into my database.
+            Please insert your employer into my database.
         </p>
 
         <div class="row">
             <div class="col-lg-5">
 
-                <?php $form = ActiveForm::begin(['action' => ['company/store'], 'id' => 'company-form', 'options' => ['enctype' => 'multipart/form-data']]); ?>
+                <?php $form = ActiveForm::begin(['action' => ['employer/store'], 'id' => 'company-form']); ?>
 
-                <?= $form->field($model, 'name_company')->textInput(['autofocus' => true]) ?>
+                <?= $form->field($model, 'first_name')->textInput(['autofocus' => true]) ?>
 
-                <?= $form->field($model, 'email_company') ?>
+                <?= $form->field($model, 'last_name') ?>
 
-                <?= $form->field($model, 'file_image')->fileInput() ?>
+                <?= $form->field($model, 'id_company')->dropDownList(
+                    $listData,
+                    ['prompt' => 'Select...']
+                ); ?>
 
-                <?= $form->field($model, 'website_company')->textarea(['rows' => 6]) ?>
+                <?= $form->field($model, 'email') ?>
+
+                <?= $form->field($model, 'phone') ?>
 
                 <?= $form->field($model, 'verifyCode')->widget(Captcha::className(), [
                     'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',

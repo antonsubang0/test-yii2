@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Companies;
+use app\models\Employer;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -69,7 +70,7 @@ class EmployerController extends Controller
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Companies::find(),
+            'query' => Employer::find(),
             'pagination' => [
                 'pageSize' => 2
             ],
@@ -92,7 +93,7 @@ class EmployerController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Companies();
+        $model = new Employer();
         return $this->render('create', [
             'model' => $model,
         ]);
@@ -100,15 +101,9 @@ class EmployerController extends Controller
 
     public function actionStore()
     {
-        $model = new Companies();
+        $model = new Employer();
         if (Yii::$app->request->post()) {
-            if ($model->load(Yii::$app->request->post())) {
-                $model->file_image = UploadedFile::getInstance($model, 'file_image');
-                $namafile = time() . $model->file_image->baseName . '-img.' . $model->file_image->extension;
-                $model->logo_company = $namafile;
-                $model->save();
-                $model->file_image = UploadedFile::getInstance($model, 'file_image');
-                $model->file_image->saveAs('uploads/' . $namafile);
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
                 Yii::$app->getSession()->setFlash('success', 'Success add company into database');
                 return $this->redirect(['index']);
             }
@@ -130,12 +125,12 @@ class EmployerController extends Controller
      *
      * @return Response
      */
-    public function actionUpdate($id_company)
+    public function actionUpdate($id_employer)
     {
-        $model = Companies::findOne($id_company);
+        $model = Employer::findOne($id_employer);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id_company' => $model->id_company]);
+            return $this->redirect(['view', 'id_employer' => $model->id_employer]);
         }
 
         return $this->render('update', [
@@ -148,10 +143,9 @@ class EmployerController extends Controller
      *
      * @return Response|string
      */
-    public function actionDelete($id_company)
+    public function actionDelete($id_employer)
     {
-        $model = Companies::findOne($id_company);
-        unlink('uploads/' . $model->logo_company);
+        $model = Employer::findOne($id_employer);
         $model->delete();
         return $this->redirect(['index']);
     }
@@ -161,10 +155,10 @@ class EmployerController extends Controller
      *
      * @return string
      */
-    public function actionView($id_company)
+    public function actionView($id_employer)
     {
         return $this->render('view', [
-            'model' => Companies::findOne($id_company),
+            'model' => Employer::findOne($id_employer),
         ]);
     }
 }

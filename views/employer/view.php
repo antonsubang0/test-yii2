@@ -6,8 +6,8 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\Companies */
 
-$this->title = $model->name_company;
-$this->params['breadcrumbs'][] = ['label' => 'Company', 'url' => ['index']];
+$this->title = $model->first_name . ' ' . $model->last_name;
+$this->params['breadcrumbs'][] = ['label' => 'Employer', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -16,8 +16,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id_company' => $model->id_company], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id_company' => $model->id_company], [
+        <?= Html::a('Update', ['update', 'id_employer' => $model->id_employer], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Delete', ['delete', 'id_employer' => $model->id_employer], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
@@ -29,20 +29,18 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'name_company',
-            'email_company:email',
+            'first_name',
+            'last_name',
+            'email:email',
+            'phone',
             [
-                'attribute' => 'logo_company',
-                'format' => 'html',
-                'value' => function ($data) {
-                    return Html::img(
-                        '/uploads/' . $data['logo_company'],
-                        ['width' => '60px']
-                    );
+
+                'attribute' => 'id_company',
+                'value' => function ($model) {
+                    return  $model->company->name_company;
                 },
 
             ],
-            'website_company',
         ],
     ]) ?>
 
