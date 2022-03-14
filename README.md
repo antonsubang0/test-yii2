@@ -24,4 +24,6 @@
 24. Move branch git = "git checkout company"
 25. Push branch github = "git push origin company"
 26. Commit modify readme on branch main = "git add . && git commit -m "modify readme" && git push origin main"
-27.
+27. create file CompanyController, CompaniesModel and view company
+28. Commit "git add . && git commit -m "create file CompanyController, CompaniesModel and view company""
+29. create file CompanyController, CompaniesModel and view company

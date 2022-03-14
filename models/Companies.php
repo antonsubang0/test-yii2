@@ -48,10 +48,4 @@ class Companies extends ActiveRecord
             'file_image' => 'Upload Logo',
         ];
     }
-
-    /**
-     * Sends an email to the specified email address using the information collected by this model.
-     * @param string $email the target email address
-     * @return bool whether the model passes validation
-     */
 }
