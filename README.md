@@ -6,7 +6,7 @@
 6. Commit yii-fresh "git add . && git commit -m "yii-fresh"
 7. Push GitHub = "git push origin main"
 8. Run server = php yii serve
-9. Modify \models\User.php and \controllers\SiteController to apply RBAC Admin and User
+9. Modify \models\User.php and \controllers\SiteController to apply Admin and User
 10. Commit yii-rbac "git add . && git commit -m "RBAC simple without DB""
 11. Push GitHub = "git push"
 12. Create Database yii2basic and modify \config\db.php
@@ -16,3 +16,10 @@
 16. Commit yii-configDB = "git add . && git commit -m "config connection DB and file migrate""
 17. Push GitHub = "git push"
 18. Migration = php yii migrate
+19. Modify UsersDB migrate file -> add insert data
+20. Commit modify = "git add . && git commit -m "modify migratefile of tabel users and insert data""
+21. Push GitHub = "git push"
+22. Migration = php yii migrate/fresh
+23. Create branch git = "git branch company"
+24. Move branch git = "git checkout company"
+25. Push branch github = "git push origin company"
