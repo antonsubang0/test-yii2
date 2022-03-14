@@ -8,7 +8,6 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
-use app\models\ContactForm;
 use app\models\User;
 use yii\data\ActiveDataProvider;
 use yii\web\UploadedFile;
@@ -23,15 +22,10 @@ class CompanyController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout', 'contact'],
+                'only' => ['create', 'update', 'store', 'delete', 'view'],
                 'rules' => [
                     [
-                        'actions' => ['logout'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                    [
-                        'actions' => ['contact'],
+                        'actions' => ['create', 'update', 'store', 'delete', 'view'],
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function ($rule, $action) {
@@ -45,6 +39,7 @@ class CompanyController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'logout' => ['post'],
+                    'delete' => ['post'],
                 ],
             ],
         ];
@@ -98,17 +93,36 @@ class CompanyController extends Controller
     public function actionCreate()
     {
         $model = new Companies();
-        if ($model->load(Yii::$app->request->post())) {
-            $model->logo_company = UploadedFile::getInstance($model, 'logo_company');
-            $model->save();
-            if ($model->upload()) {
-                Yii::$app->getSession()->setFlash('success', 'Successfully add company into database');
-                return $this->goBack();
-            }
-        }
         return $this->render('create', [
             'model' => $model,
         ]);
+    }
+
+    public function actionStore()
+    {
+        $model = new Companies();
+        if (Yii::$app->request->post()) {
+            if ($model->load(Yii::$app->request->post())) {
+                $model->file_image = UploadedFile::getInstance($model, 'file_image');
+                $namafile = time() . $model->file_image->baseName . '-img.' . $model->file_image->extension;
+                $model->logo_company = $namafile;
+                $model->save();
+                $model->file_image = UploadedFile::getInstance($model, 'file_image');
+                $model->file_image->saveAs('uploads/' . $namafile);
+                Yii::$app->getSession()->setFlash('success', 'Success add company into database');
+                return $this->redirect(['index']);
+            }
+            // $model->logo_company = UploadedFile::getInstance($model, 'logo_company');
+
+            // if ($model->logo_company && $model->validate()) {
+            //     $fileNameup = $model->logo_company->baseName . time() . '.' . $model->logo_company->extension;
+            //     $model->logo_company->saveAs('uploads/' . $fileNameup);
+            //     $model->logo_company = $fileNameup;
+            //     $model->save();
+            //     Yii::$app->getSession()->setFlash('success', 'Success add company into database');
+            //     return $this->redirect(['index']);
+            // }
+        }
     }
 
     /**
@@ -116,11 +130,17 @@ class CompanyController extends Controller
      *
      * @return Response
      */
-    public function actionUpdate()
+    public function actionUpdate($id_company)
     {
-        Yii::$app->user->logout();
+        $model = Companies::findOne($id_company);
 
-        return $this->goHome();
+        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id_company' => $model->id_company]);
+        }
+
+        return $this->render('update', [
+            'model' => $model,
+        ]);
     }
 
     /**
@@ -128,17 +148,12 @@ class CompanyController extends Controller
      *
      * @return Response|string
      */
-    public function actionDelete()
+    public function actionDelete($id_company)
     {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            Yii::$app->session->setFlash('contactFormSubmitted');
-
-            return $this->refresh();
-        }
-        return $this->render('contact', [
-            'model' => $model,
-        ]);
+        $model = Companies::findOne($id_company);
+        unlink('uploads/' . $model->logo_company);
+        $model->delete();
+        return $this->redirect(['index']);
     }
 
     /**
@@ -146,8 +161,10 @@ class CompanyController extends Controller
      *
      * @return string
      */
-    public function actionView()
+    public function actionView($id_company)
     {
-        return $this->render('about');
+        return $this->render('view', [
+            'model' => Companies::findOne($id_company),
+        ]);
     }
 }

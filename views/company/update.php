@@ -8,9 +8,9 @@ use yii\bootstrap4\ActiveForm;
 use yii\bootstrap4\Html;
 use yii\captcha\Captcha;
 
-$this->title = 'Create Company';
+$this->title = 'Update Company';
 $this->params['breadcrumbs'][] = ['label' => 'Company', 'url' => ['index']];
-$this->params['breadcrumbs'][] = 'Create';
+$this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="site-contact">
 

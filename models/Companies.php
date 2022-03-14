@@ -11,6 +11,7 @@ use yii\db\ActiveRecord;
 class Companies extends ActiveRecord
 {
     public $verifyCode;
+    public $file_image;
 
     public static function tableName()
     {
@@ -24,8 +25,8 @@ class Companies extends ActiveRecord
         return [
             // name, email, subject and body are required
             [['name_company', 'email_company'], 'required'],
-            [['website_company'], 'safe'],
-            [['logo_company'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg'],
+            [['website_company', 'logo_company'], 'safe'],
+            [['file_image'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg'],
             // email has to be a valid email address
             ['email_company', 'email'],
             // verifyCode needs to be entered correctly
@@ -44,6 +45,7 @@ class Companies extends ActiveRecord
             'email_company' => 'Email',
             'logo_company' => 'Logo',
             'website_company' => 'Website',
+            'file_image' => 'Upload Logo',
         ];
     }
 
@@ -52,14 +54,4 @@ class Companies extends ActiveRecord
      * @param string $email the target email address
      * @return bool whether the model passes validation
      */
-
-    public function upload()
-    {
-        if ($this->validate()) {
-            $patch = 'uploads/' . $this->logo_company->baseName . '.' . $this->logo_company->extension;
-            $this->logo_company->saveAs($patch);
-        } else {
-            return false;
-        }
-    }
 }
