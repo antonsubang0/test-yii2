@@ -40,8 +40,8 @@ AppAsset::register($this);
             'options' => ['class' => 'navbar-nav'],
             'items' => [
                 ['label' => 'Home', 'url' => ['/site/index']],
-                ['label' => 'Company', 'url' => ['/company/index']],
-                ['label' => 'Employer', 'url' => ['/employer/index']],
+                Yii::$app->user->isGuest ? '' : (['label' => 'Company', 'url' => ['/company/index']]),
+                Yii::$app->user->isGuest ? '' : (['label' => 'Employer', 'url' => ['/employer/index']]),
                 Yii::$app->user->isGuest ? (['label' => 'Login', 'url' => ['/site/login']]
                 ) : ('<li>'
                     . Html::beginForm(['/site/logout'], 'post', ['class' => 'form-inline'])
