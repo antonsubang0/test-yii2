@@ -7,7 +7,7 @@
 7. Push GitHub = "git push origin main"
 8. Run server = php yii serve
 9. Modify \models\User.php and \controllers\SiteController to apply Admin and User
-10. Commit yii-rbac "git add . && git commit -m "RBAC simple without DB""
+10. Commit yii-auth "git add . && git commit -m "auth simple without DB""
 11. Push GitHub = "git push"
 12. Create Database yii2basic and modify \config\db.php
 13. Create CompaniesDB migrate file = "php yii migrate/create create_companies_table"
@@ -33,3 +33,5 @@
 33. fix some bug on 'create company dan role'
 34. commit crud employer = "git add . && git commit -m "fix bug on create company dan role""
 35. Push branch github = "git push origin company"
+36. I will merge my git = "git checkout main && git merge company"
+37. push main on github = "git push origin main"
