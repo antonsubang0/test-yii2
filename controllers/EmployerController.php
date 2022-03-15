@@ -29,7 +29,7 @@ class EmployerController extends Controller
                         'roles' => ['@'],
                         'matchCallback' => function ($rule, $action) {
                             if (!User::isUserAdmin(Yii::$app->user->identity->username)) {
-                                Yii::$app->getSession()->setFlash('auth', 'You can not access.');
+                                Yii::$app->getSession()->setFlash('auth', 'You can not access employer page.');
                                 return $this->goHome();
                             };
                             return true;
