@@ -45,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 'attribute' => 'id_company',
                 'value' => function ($model) {
-                    return  $model->company->name_company;
+                    if ($model->company) return $model->company->name_company;
                 },
 
             ],
