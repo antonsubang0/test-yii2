@@ -2,7 +2,6 @@
 
 namespace app\controllers;
 
-use app\models\Companies;
 use app\models\Employer;
 use Yii;
 use yii\filters\AccessControl;
@@ -11,7 +10,6 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\User;
 use yii\data\ActiveDataProvider;
-use yii\web\UploadedFile;
 
 class EmployerController extends Controller
 {
@@ -23,14 +21,17 @@ class EmployerController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['create', 'update', 'store', 'delete', 'view'],
+                'only' => ['index', 'create', 'update', 'store', 'delete', 'view'],
                 'rules' => [
                     [
-                        'actions' => ['create', 'update', 'store', 'delete', 'view'],
+                        'actions' => ['index', 'create', 'update', 'store', 'delete', 'view'],
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function ($rule, $action) {
-                            if (!User::isUserAdmin(Yii::$app->user->identity->username)) return $this->goHome();
+                            if (!User::isUserAdmin(Yii::$app->user->identity->username)) {
+                                Yii::$app->getSession()->setFlash('auth', 'You can not access.');
+                                return $this->goHome();
+                            };
                             return true;
                         }
                     ],
@@ -39,7 +40,7 @@ class EmployerController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'logout' => ['post'],
+                    'store' => ['post'],
                     'delete' => ['post'],
                 ],
             ],
@@ -76,7 +77,7 @@ class EmployerController extends Controller
             ],
             'sort' => [
                 'defaultOrder' => [
-                    'id_company' => SORT_DESC,
+                    'first_name' => SORT_ASC,
                 ]
             ],
         ]);
@@ -94,30 +95,15 @@ class EmployerController extends Controller
     public function actionCreate()
     {
         $model = new Employer();
+        if (Yii::$app->request->post()) {
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                Yii::$app->getSession()->setFlash('success', 'Success add employer into database');
+                return $this->redirect(['index']);
+            }
+        }
         return $this->render('create', [
             'model' => $model,
         ]);
-    }
-
-    public function actionStore()
-    {
-        $model = new Employer();
-        if (Yii::$app->request->post()) {
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                Yii::$app->getSession()->setFlash('success', 'Success add company into database');
-                return $this->redirect(['index']);
-            }
-            // $model->logo_company = UploadedFile::getInstance($model, 'logo_company');
-
-            // if ($model->logo_company && $model->validate()) {
-            //     $fileNameup = $model->logo_company->baseName . time() . '.' . $model->logo_company->extension;
-            //     $model->logo_company->saveAs('uploads/' . $fileNameup);
-            //     $model->logo_company = $fileNameup;
-            //     $model->save();
-            //     Yii::$app->getSession()->setFlash('success', 'Success add company into database');
-            //     return $this->redirect(['index']);
-            // }
-        }
     }
 
     /**

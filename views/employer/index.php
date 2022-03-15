@@ -22,6 +22,12 @@ $this->params['breadcrumbs'][] = 'List';
             ['class' => 'yii\grid\SerialColumn'],
             'first_name',
             'last_name',
+            [
+                'label' => 'Full Name',
+                'attribute' => 'first_name',
+                'value' => 'fullName'
+
+            ],
             'email',
             'phone',
             [

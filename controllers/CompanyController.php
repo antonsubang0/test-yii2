@@ -22,14 +22,17 @@ class CompanyController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['create', 'update', 'store', 'delete', 'view'],
+                'only' => ['index', 'create', 'update', 'store', 'delete', 'view'],
                 'rules' => [
                     [
-                        'actions' => ['create', 'update', 'store', 'delete', 'view'],
+                        'actions' => ['index', 'create', 'update', 'store', 'delete', 'view'],
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function ($rule, $action) {
-                            if (!User::isUserAdmin(Yii::$app->user->identity->username)) return $this->goHome();
+                            if (!User::isUserAdmin(Yii::$app->user->identity->username)) {
+                                Yii::$app->getSession()->setFlash('auth', 'You can not access.');
+                                return $this->goHome();
+                            };
                             return true;
                         }
                     ],
@@ -38,7 +41,34 @@ class CompanyController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'logout' => ['post'],
+                    'store' => ['post'],
+                    'delete' => ['post'],
+                ],
+            ],
+        ];
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['index', 'create', 'update', 'store', 'delete', 'view'],
+                'rules' => [
+                    [
+                        'actions' => ['index', 'create', 'update', 'store', 'delete', 'view'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function ($rule, $action) {
+                            if (!User::isUserAdmin(Yii::$app->user->identity->username)) {
+                                Yii::$app->getSession()->setFlash('auth', 'You can not access.');
+                                return $this->goHome();
+                            };
+                            return true;
+                        }
+                    ],
+                ],
+            ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'store' => ['post'],
                     'delete' => ['post'],
                 ],
             ],
@@ -75,7 +105,7 @@ class CompanyController extends Controller
             ],
             'sort' => [
                 'defaultOrder' => [
-                    'id_company' => SORT_DESC,
+                    'name_company' => SORT_ASC,
                 ]
             ],
         ]);
@@ -104,11 +134,15 @@ class CompanyController extends Controller
         if (Yii::$app->request->post()) {
             if ($model->load(Yii::$app->request->post())) {
                 $model->file_image = UploadedFile::getInstance($model, 'file_image');
-                $namafile = time() . $model->file_image->baseName . '-img.' . $model->file_image->extension;
-                $model->logo_company = $namafile;
+                if ($model->file_image) {
+                    $namafile = time() . $model->file_image->baseName . '-img.' . $model->file_image->extension;
+                    $model->logo_company = $namafile;
+                }
                 $model->save();
                 $model->file_image = UploadedFile::getInstance($model, 'file_image');
-                $model->file_image->saveAs('uploads/' . $namafile);
+                if ($model->file_image) {
+                    $model->file_image->saveAs('uploads/' . $namafile);
+                }
                 Yii::$app->getSession()->setFlash('success', 'Success add company into database');
                 return $this->redirect(['index']);
             }
@@ -151,7 +185,9 @@ class CompanyController extends Controller
     public function actionDelete($id_company)
     {
         $model = Companies::findOne($id_company);
-        unlink('uploads/' . $model->logo_company);
+        if ($model->logo_company || $model->logo_company != '') {
+            unlink('uploads/' . $model->logo_company);
+        }
         $model->delete();
         return $this->redirect(['index']);
     }

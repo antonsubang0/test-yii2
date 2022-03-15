@@ -29,3 +29,7 @@
 29. create file EmployerController, EmployerModel and view employer
 30. create creat, read, update and delete on employers file
 31. commit crud employer = "git add . && git commit -m "crud employer""
+32. Push branch github = "git push origin company"
+33. fix some bug on 'create company dan role'
+34. commit crud employer = "git add . && git commit -m "fix bug on create company dan role""
+35. Push branch github = "git push origin company"

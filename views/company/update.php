@@ -13,41 +13,34 @@ $this->params['breadcrumbs'][] = ['label' => 'Company', 'url' => ['index']];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="site-contact">
+    <h1><?= Html::encode($this->title) ?></h1>
+    <p>
+        Please insert your company into my database.
+    </p>
 
-    <?php if (Yii::$app->session->hasFlash('success')) : ?>
-        <?= Html::a('Back', ['/company/create'], ['class' => 'btn btn-primary']) ?>
+    <div class="row">
+        <div class="col-lg-5">
 
-    <?php else : ?>
-        <h1><?= Html::encode($this->title) ?></h1>
-        <p>
-            Please insert your company into my database.
-        </p>
+            <?php $form = ActiveForm::begin(['id' => 'company-form', 'options' => ['enctype' => 'multipart/form-data']]); ?>
 
-        <div class="row">
-            <div class="col-lg-5">
+            <?= $form->field($model, 'name_company')->textInput(['autofocus' => true]) ?>
 
-                <?php $form = ActiveForm::begin(['action' => ['company/store'], 'id' => 'company-form', 'options' => ['enctype' => 'multipart/form-data']]); ?>
+            <?= $form->field($model, 'email_company') ?>
 
-                <?= $form->field($model, 'name_company')->textInput(['autofocus' => true]) ?>
+            <?= $form->field($model, 'file_image')->fileInput() ?>
 
-                <?= $form->field($model, 'email_company') ?>
+            <?= $form->field($model, 'website_company')->textarea(['rows' => 6]) ?>
 
-                <?= $form->field($model, 'file_image')->fileInput() ?>
+            <?= $form->field($model, 'verifyCode')->widget(Captcha::className(), [
+                'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
+            ]) ?>
 
-                <?= $form->field($model, 'website_company')->textarea(['rows' => 6]) ?>
-
-                <?= $form->field($model, 'verifyCode')->widget(Captcha::className(), [
-                    'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
-                ]) ?>
-
-                <div class="form-group">
-                    <?= Html::submitButton('Submit', ['class' => 'btn btn-primary', 'name' => 'contact-button']) ?>
-                </div>
-
-                <?php ActiveForm::end(); ?>
-
+            <div class="form-group">
+                <?= Html::submitButton('Submit', ['class' => 'btn btn-primary', 'name' => 'contact-button']) ?>
             </div>
-        </div>
 
-    <?php endif; ?>
+            <?php ActiveForm::end(); ?>
+
+        </div>
+    </div>
 </div>

@@ -18,46 +18,39 @@ $this->params['breadcrumbs'][] = ['label' => 'Employer', 'url' => ['index']];
 $this->params['breadcrumbs'][] = 'Create';
 ?>
 <div class="site-contact">
+    <h1><?= Html::encode($this->title) ?></h1>
+    <p>
+        Please insert your employer into my database.
+    </p>
 
-    <?php if (Yii::$app->session->hasFlash('success')) : ?>
-        <?= Html::a('Back', ['/employer/create'], ['class' => 'btn btn-primary']) ?>
+    <div class="row">
+        <div class="col-lg-5">
 
-    <?php else : ?>
-        <h1><?= Html::encode($this->title) ?></h1>
-        <p>
-            Please insert your employer into my database.
-        </p>
+            <?php $form = ActiveForm::begin(['id' => 'employer-form']); ?>
 
-        <div class="row">
-            <div class="col-lg-5">
+            <?= $form->field($model, 'first_name')->textInput(['autofocus' => true]) ?>
 
-                <?php $form = ActiveForm::begin(['action' => ['employer/store'], 'id' => 'company-form']); ?>
+            <?= $form->field($model, 'last_name') ?>
 
-                <?= $form->field($model, 'first_name')->textInput(['autofocus' => true]) ?>
+            <?= $form->field($model, 'id_company')->dropDownList(
+                $listData,
+                ['prompt' => 'Select...']
+            ); ?>
 
-                <?= $form->field($model, 'last_name') ?>
+            <?= $form->field($model, 'email') ?>
 
-                <?= $form->field($model, 'id_company')->dropDownList(
-                    $listData,
-                    ['prompt' => 'Select...']
-                ); ?>
+            <?= $form->field($model, 'phone') ?>
 
-                <?= $form->field($model, 'email') ?>
+            <?= $form->field($model, 'verifyCode')->widget(Captcha::className(), [
+                'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
+            ]) ?>
 
-                <?= $form->field($model, 'phone') ?>
-
-                <?= $form->field($model, 'verifyCode')->widget(Captcha::className(), [
-                    'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
-                ]) ?>
-
-                <div class="form-group">
-                    <?= Html::submitButton('Submit', ['class' => 'btn btn-primary', 'name' => 'contact-button']) ?>
-                </div>
-
-                <?php ActiveForm::end(); ?>
-
+            <div class="form-group">
+                <?= Html::submitButton('Submit', ['class' => 'btn btn-primary', 'name' => 'contact-button']) ?>
             </div>
-        </div>
 
-    <?php endif; ?>
+            <?php ActiveForm::end(); ?>
+
+        </div>
+    </div>
 </div>

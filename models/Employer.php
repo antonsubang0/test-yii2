@@ -52,4 +52,9 @@ class Employer extends ActiveRecord
     {
         return $this->hasOne(Companies::class, ['id_company' => 'id_company']);
     }
+
+    public function getFullName()
+    {
+        return $this->first_name . ' ' . $this->last_name;
+    }
 }

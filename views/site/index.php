@@ -7,6 +7,11 @@ $this->title = 'My Yii Application';
 <div class="site-index">
 
     <div class="jumbotron text-center bg-transparent">
+        <?php if (Yii::$app->session->hasFlash('auth')) : ?>
+            <div class="alert alert-danger" role="alert">
+                <?= (Yii::$app->session->getFlash('auth')) ?>
+            </div>
+        <?php endif; ?>
         <h1 class="display-4">Congratulations!</h1>
 
         <p class="lead">You have successfully created your Yii-powered application.</p>
