@@ -13,29 +13,26 @@ class m220313_214753_create_users_table extends Migration
     public function safeUp()
     {
         $this->createTable('{{%users}}', [
-            'id_user' => $this->primaryKey(),
-            'nama_user' => $this->string()->notNull(),
-            'email_user' => $this->string()->notNull()->unique(),
-            'password_user' => $this->string(),
+            'id' => $this->primaryKey(),
+            'username' => $this->string()->notNull()->unique(),
+            'password' => $this->string(),
             'authKey' => $this->string(),
             'accessToken' => $this->string(),
             'role' => $this->integer(),
         ]);
         $this->insert('users', array(
-            'nama_user' => 'Admin',
-            'email_user' => 'admin@admin.com',
-            'password_user' => Yii::$app->getSecurity()->generatePasswordHash('password'),
-            'authKey' => '',
-            'accessToken' => '',
+            'username' => 'admin@admin.com',
+            'password' => Yii::$app->getSecurity()->generatePasswordHash('password'),
+            'authKey' => 'test100key',
+            'accessToken' => '100-token',
             'role' => 20
         ));
         $this->insert('users', array(
-            'nama_user' => 'User',
-            'email_user' => 'user@user.com',
-            'password_user' => Yii::$app->getSecurity()->generatePasswordHash('password'),
-            'authKey' => '',
-            'accessToken' => '',
-            'role' => 20
+            'username' => 'user@user.com',
+            'password' => Yii::$app->getSecurity()->generatePasswordHash('password'),
+            'authKey' => 'test101key',
+            'accessToken' => '101-token',
+            'role' => 10
         ));
     }
 
