@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Employer;
+use app\models\EmployerSearch;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -70,19 +71,11 @@ class EmployerController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Employer::find(),
-            'pagination' => [
-                'pageSize' => 2
-            ],
-            'sort' => [
-                'defaultOrder' => [
-                    'first_name' => SORT_ASC,
-                ]
-            ],
-        ]);
+        $searchModel = new EmployerSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
+            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -96,7 +89,11 @@ class EmployerController extends Controller
     {
         $model = new Employer();
         if (Yii::$app->request->post()) {
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $wkt = explode('-', Yii::$app->request->post()['Employer']['join_date']);
+            $time = $wkt[2] . '-' . $wkt[1] . '-' . $wkt[0];
+            if ($model->load(Yii::$app->request->post())) {
+                $model->join_date = $time;
+                $model->save();
                 Yii::$app->getSession()->setFlash('success', 'Success add employer into database');
                 return $this->redirect(['index']);
             }
@@ -115,7 +112,11 @@ class EmployerController extends Controller
     {
         $model = Employer::findOne($id_employer);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+        if ($this->request->isPost && $model->load($this->request->post())) {
+            $wkt = explode('-', Yii::$app->request->post()['Employer']['join_date']);
+            $time = $wkt[2] . '-' . $wkt[1] . '-' . $wkt[0];
+            $model->join_date = $time;
+            $model->save();
             return $this->redirect(['view', 'id_employer' => $model->id_employer]);
         }
 

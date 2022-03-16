@@ -28,6 +28,7 @@ class Employer extends ActiveRecord
             [['first_name', 'last_name', 'email', 'phone'], 'string', 'max' => 255],
             // email has to be a valid email address
             [['email'], 'unique'],
+            ['join_date', 'safe'],
             [['id_company'], 'exist', 'skipOnError' => true, 'targetClass' => Companies::className(), 'targetAttribute' => ['id_company' => 'id_company']],
             // verifyCode needs to be entered correctly
             ['verifyCode', 'captcha'],
@@ -46,6 +47,7 @@ class Employer extends ActiveRecord
             'id_company' => 'Company',
             'email' => 'Email',
             'phone' => 'Phone',
+            'join_date' => 'Join Date'
         ];
     }
     public function getCompany()

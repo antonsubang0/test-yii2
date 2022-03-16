@@ -41,6 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'email:email',
             'phone',
+            'join_date',
             [
 
                 'attribute' => 'id_company',

@@ -9,6 +9,7 @@ use yii\bootstrap4\ActiveForm;
 use yii\bootstrap4\Html;
 use yii\captcha\Captcha;
 use yii\helpers\ArrayHelper;
+use yii\jui\DatePicker;
 
 $company = Companies::find()->all();
 $listData = ArrayHelper::map($company, 'id_company', 'name_company');
@@ -39,7 +40,14 @@ $this->params['breadcrumbs'][] = 'Create';
 
             <?= $form->field($model, 'email') ?>
 
-            <?= $form->field($model, 'phone') ?>
+            <?= $form->field($model, 'phone')->textInput([
+                'type' => 'number'
+            ]) ?>
+            <?= $form->field($model, 'join_date')->widget(
+                DatePicker::className(),
+                ['dateFormat' => 'dd-MM-yyyy', 'options' => ['class' => 'form-control']],
+            )
+            ?>
 
             <?= $form->field($model, 'verifyCode')->widget(Captcha::className(), [
                 'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',

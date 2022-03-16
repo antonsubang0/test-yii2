@@ -19,6 +19,7 @@ class m220313_212710_create_employer_table extends Migration
             'id_company' => $this->integer(),
             'email' => $this->string()->notNull()->unique(),
             'phone' => $this->string(),
+            'join_date' => $this->date(),
         ]);
         $this->addForeignKey(
             'fk_companies',

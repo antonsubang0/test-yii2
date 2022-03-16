@@ -18,6 +18,7 @@ $this->params['breadcrumbs'][] = 'List';
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             'first_name',
@@ -36,6 +37,7 @@ $this->params['breadcrumbs'][] = 'List';
                 'value' => 'company.name_company'
 
             ],
+            'join_date',
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Employer $model, $key, $index, $column) {
